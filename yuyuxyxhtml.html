@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>捕鱼鱼game</title>
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #87CEEB;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .game-info {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: white;
+            font-family: 'Inter', system-ui;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+        #score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+            .fish {
+                position: absolute;
+                width: 80px;
+                height: 80px; 
+                background: url('html1.jpg') no-repeat center;
+                background-size: cover; 
+                cursor: pointer;
+                transition: transform 0.3s ease;
+                border-radius: 50%; 
+            }
+        .fish.right { transform: scaleX(1); } 
+        .fish.left { transform: scaleX(-1); } 
+        #startBtn {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 20;
+        }
+        #startBtn:hover {
+            background: #1d4ed8;
+        }
+        .sakura {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffc0cb; 
+            border-radius: 50% 30%; 
+            animation: sakuraFall 2s linear forwards;
+        }
+        @keyframes sakuraFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50vh) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+</style>
+</head>
+<body>
+    <div class="game-info">
+        <p>得分：<span id="score">0</span></p>
+        <p>剩余时间：<span id="time">30</span> 秒</p>
+    </div>
+    <button id="startBtn">点击开始捕鱼！</button>
+    <script>
+        let score = 0;
+        let timeLeft = 30;
+        let gameActive = false;
+        const maxFish = 10; 
+        const fishSpeed = [1, 3]; 
+        function createFish() {
+            if (!gameActive || document.querySelectorAll('.fish').length >= maxFish) return;
+            const fish = document.createElement('div');
+            fish.className = 'fish';
+            const direction = Math.random() > 0.5 ? 'right' : 'left';
+            fish.classList.add(direction);
+            const yPos = Math.random() * (window.innerHeight - 60) + 30;
+            fish.style.top = `${yPos}px`;
+            const xStart = direction === 'right' ? -80 : window.innerWidth + 80;
+            fish.style.left = `${xStart}px`;
+            const speed = Math.random() * (fishSpeed[1] - fishSpeed[0]) + fishSpeed[0];
+            function moveFish() {
+                if (!gameActive) return;
+                const currentX = parseFloat(fish.style.left);
+                const newX = direction === 'right' ? currentX + speed : currentX - speed;
+                if (direction === 'right' && newX > window.innerWidth + 80 || 
+                    direction === 'left' && newX < -80) {
+                    fish.remove();
+                    return;
+                }
+                fish.style.left = `${newX}px`;
+                requestAnimationFrame(moveFish);
+            }
+            fish.addEventListener('click', () => {
+                score++;
+                document.getElementById('score').textContent = score;
+                fish.remove();
+                createFish(); 
+            const fishRect = fish.getBoundingClientRect(); 
+            for (let i = 0; i < 8; i++) { 
+                const sakura = document.createElement('div');
+                sakura.className = 'sakura';
+                sakura.style.left = `${fishRect.left + Math.random() * 40 - 20}px`; 
+                sakura.style.top = `${fishRect.top + Math.random() * 40 - 20}px`; 
+                sakura.style.animationDuration = `${1.5 + Math.random() * 1}s`;
+                sakura.addEventListener('animationend', () => sakura.remove());
+                document.body.appendChild(sakura);
+            }
+            });
+            document.body.appendChild(fish);
+            moveFish();
+        }
+        document.getElementById('startBtn').addEventListener('click', () => {
+            score = 0;
+            timeLeft = 30;
+            gameActive = true;
+            document.getElementById('score').textContent = score;
+            document.getElementById('time').textContent = timeLeft;
+            document.getElementById('startBtn').style.display = 'none';
+            for (let i = 0; i < maxFish; i++) {
+                setTimeout(createFish, i * 500); 
+            }
+            const timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    gameActive = false;
+                    alert(`游戏结束！最终得分：${score}`);
+                    document.getElementById('startBtn').style.display = 'block';
+                    document.querySelectorAll('.fish').forEach(fish => fish.remove());
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

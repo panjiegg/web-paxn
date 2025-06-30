@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>圈小猫游戏</title>
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+    <style>
+        .game-container {
+            width: 500px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            background: #2c3e50;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .cell {
+            width: 60px;
+            height: 60px;
+            background: white;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+            /* 新增点击优化 */
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .cell.blocked {
+            background: #3498db;
+        }
+        .cat::after {
+            content: '🐱';
+            font-size: 40px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #status {
+            margin: 20px 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        button {
+            padding: 10px 20px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .cell:not(.blocked) {
+            transition: all 0.3s ease;
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>圈小猫游戏</h1>
+        <div id="status">点击格子包围小猫</div>
+        <div class="grid" id="grid"></div>
+        <div class="controls">
+            <button onclick="resetGame()">重新开始</button>
+            <button onclick="window.location.href='catb.html'">下一页</button>
+        </div>
+    </div>
+    <script>
+        let catPosition = 24;
+        let gameActive = true;
+        
+        function handleClick(index) {
+            if (!gameActive || !document.getElementsByClassName('cell')[index]) return;
+            const cell = document.getElementsByClassName('cell')[index];
+            if (!cell.classList.contains('blocked') && index !== catPosition) {
+                cell.classList.add('blocked');
+                moveCat();
+            }
+        }
+        let cells;
+        function initGame() {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            for(let i = 0; i < 49; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell' + (i === catPosition ? ' cat' : '');
+                // 添加鼠标点击事件
+                cell.onclick = () => handleClick(i);
+                cell.ontouchstart = (e) => {
+                    e.preventDefault();
+                    handleClick(i);
+                };
+                grid.appendChild(cell);
+            }
+            cells = document.getElementsByClassName('cell');
+        }
+        function findEscapePath() {
+            const queue = [{ pos: catPosition, path: [] }];
+            const visited = new Set();
+            
+            while (queue.length > 0) {
+                const current = queue.shift();
+                if (current.pos <= 6 ||
+                    current.pos >= 42 ||
+                    current.pos % 7 === 0 ||
+                    current.pos % 7 === 6) {
+                    return current.path;
+                }
+                const directions = [-7, -1, 1, 7];
+                for (const d of directions) {
+                    const nextPos = current.pos + d;
+                    if (nextPos >= 0 && nextPos < 49 &&
+                        !visited.has(nextPos) &&
+                        !document.getElementsByClassName('cell')[nextPos].classList.contains('blocked')) {
+                        visited.add(nextPos);
+                        queue.push({
+                            pos: nextPos,
+                            path: [...current.path, nextPos]
+                        });
+                    }
+                }
+            }
+            return null;
+        }
+        function moveCat() {
+            if (!gameActive) return;
+            function isSurrounded() {
+                const positions = [];
+                const row = Math.floor(catPosition / 7);
+                const col = catPosition % 7;
+                for(let i = -1; i <= 1; i++) {
+                    for(let j = -1; j <= 1; j++) {
+                        if(i === 0 && j === 0) continue;
+                        const newRow = row + i;
+                        const newCol = col + j;
+                        if(newRow >= 0 && newRow < 7 && newCol >= 0 && newCol < 7) {
+                            const pos = newRow * 7 + newCol;
+                            if(cells[pos]) {
+                                positions.push(pos);
+                            }
+                        }
+                    }
+                }
+                return positions.every(pos => 
+                    cells[pos].classList.contains('blocked')
+                );
+            }
+            if(isSurrounded()) {
+                gameActive = false;
+                document.getElementById('status').textContent = '你赢了！';
+                return;
+            }
+            const escapePath = findEscapePath();
+            const directions = [-7, -1, 1, 7];
+            const possibleMoves = directions
+                .map(d => catPosition + d)
+                .filter(pos => 
+                    pos >= 0 && pos < 49 && 
+                    !document.getElementsByClassName('cell')[pos].classList.contains('blocked')
+                );
+            if (!escapePath && possibleMoves.length === 0) {
+                gameActive = false;
+                document.getElementById('status').textContent = '你赢了！';
+                return;
+            }
+            let catMoveTimer = setTimeout(() => {
+                const randomMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                document.getElementsByClassName('cell')[catPosition].classList.remove('cat');
+                catPosition = randomMove;
+                document.getElementsByClassName('cell')[catPosition].classList.add('cat');
+                if([0,6,42,48].includes(catPosition)) {
+                    clearTimeout(catMoveTimer);
+                    gameActive = false;
+                    document.getElementById('status').textContent = '小猫逃走了！';
+                }
+            }, 500);
+        }
+        function resetGame() {
+            catPosition = 24;
+            gameActive = true;
+            document.getElementById('status').textContent = '点击格子包围小猫';
+            initGame();
+            Array.from(cells).forEach(cell => cell.classList.remove('blocked'));
+        }
+        window.onload = initGame;
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    </script>
+</body>
+</html>

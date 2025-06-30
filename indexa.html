@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>久恩的博客</title>
+    <!-- 网站图标 -->
+    <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
+    <!-- 推荐添加多种格式图标 -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <style>
+        :root {
+            --primary-color: #2d3436;
+            --secondary-color: #2563eb;
+            --accent-color: #3b82f6;
+            --bg-color: #ffffff;
+            --text-color: #1e293b;
+            --code-bg: #f1f5f9;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e293b;
+                --text-color: #f8fafc;
+                --code-bg: #334155;
+            }
+        }
+        body {
+            font-family: 'Inter', system-ui;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), 
+                        url('/images/webpng.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.3s ease;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1e293b;
+                --text-color: #f8fafc;
+                --code-bg: #334155;
+            }
+            body {
+                background: linear-gradient(rgba(30, 41, 59,0.9), rgba(30, 41, 59,0.9)), 
+                            url('/images/webpng.png');
+            }
+        }
+        nav {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background: rgba(var(--bg-color), 0.85);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: background 0.3s ease;
+            z-index: 50;
+        }
+        @media (prefers-color-scheme: dark) {
+            nav {
+                background: rgba(var(--bg-color), 0.7);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            }
+        }
+        .post-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(8px); 
+        }
+        @media (prefers-color-scheme: dark) {
+            .post-card {
+                background: rgba(30, 41, 59, 0.7); 
+            }
+        }
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        time {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        nav a {
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            font-weight: 500;
+        }
+        nav a:hover {
+            background: rgba(var(--secondary-color), 0.1);
+            color: var(--secondary-color);
+        }
+        .post-card a {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+            color: white !important;
+            border-radius: 999px;
+            text-decoration: none;
+            margin-top: 1rem;
+            transition: transform 0.2s ease;
+        }
+        .post-card a:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px -3px rgba(var(--secondary-color), 0.3);
+        }
+        .social-links a {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(var(--text-color), 0.1);
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.5rem;
+            transition: background 0.2s ease;
+        }
+        .social-links a:hover {
+            background: rgba(var(--secondary-color), 0.2);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <h1>Paxn's Blog</h1>
+            <a href="#about">个人介绍</a>
+        </div>
+        <div id="live-clock" class="time-display"></div>
+    </nav>
+    <section class="post-card" id="about">
+        <div class="profile-header">
+            <img src="avatar.jpg" alt="Paxn 的头像" class="profile-avatar">
+            <div>
+                <h2>技术爱好者</h2>
+                <div class="profile-meta">
+                    <span>📍 中国 · 广东</span>
+                </div>
+            </div>
+        </div>
+        <div class="profile-content">
+            <h3>关于我</h3>
+            <p>高中生，自己独立开发</p>
+            <h3>我的其他网页</h3>
+            <div class="skill-grid">
+                <a class="skill-tag" href="ge/yuyuxyxhtml.html" target="_blank">鱼鱼game</a>
+                <a class="skill-tag" href="tl/ping.html" target="_blank">ping web</a>
+                <a class="skill-tag" href="ge/tetris.html" target="_blank">俄罗斯方块</a>
+                <a class="skill-tag" href="htmlfp/html1.html" target="_blank">html教学</a>
+                <a class="skill-tag" href="tl/html_generator.html" target="_blank">自动生成网页</a>
+                <a class="skill-tag" href="ge/cata.html" target="_blank">圈小猫游戏</a>
+            </div>
+            <h3> 📌 近期成就</h3>
+            <ul class="achievement-list">
+                <li>网页 server 搭建</li>
+                <li>VPN隧道尝试搭建</li>
+                <li>Ddos防御</li>
+            </ul>
+        </div>
+    </section>
+    <article class="post-card">
+        <h2>我的第一篇文章</h2>
+        <time datetime="2025-5-0">2025年5月17日</time>
+        <p>这里是文章的开头内容... <a href="dypwz.html">阅读全文</a></p>
+    </article>
+    <article class="post-card">
+        <h2>技术笔记：HTML5新特性</h2>
+        <time datetime="2025-5-0">2025年5月0日</time>
+        <p>讨论HTML5的语义化标签... <a href="#">阅读全文</a></p>
+    </article>
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/panjiegg/paxn" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="mailto:xiaohaopigdowo@qq.com">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+        <div id="user-info" style="margin: 1rem 0; color: var(--text-color); font-size: 0.9rem;">
+            <div>IP地址加载中...</div>
+        </div>
+        <p>© 2025 Paxn的博客</p>
+    </footer>
+    <script>
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('user-ip').textContent = `访问IP: ${data.ip}`;
+        })
+        .catch(() => {
+            document.getElementById('user-ip').textContent = '欢迎访问';
+        });
+    function updateClock() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('zh-CN', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        document.getElementById('live-clock').textContent = timeString;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+    (function initSecurity() {
+    getIPInfo();
+    })();
+    </script>
+</body>
+</html>
+<style>
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--secondary-color);
+}
+.profile-meta {
+    display: flex;
+    gap: 1.5rem;
+    color: #64748b;
+    margin: 0.5rem 0;
+}
+.skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.8rem;
+}
+.skill-tag {
+    background: rgba(var(--secondary-color), 0.1);
+    color: var(--secondary-color);
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    text-align: center;
+    text-decoration: none; 
+    display: inline-block; 
+    transition: background 0.2s ease; 
+}
+.skill-tag:hover {
+    background: #e0f2fe; 
+}
+.achievement-list {
+    padding-left: 1.5rem;
+    list-style-type: '▹';
+}
+.achievement-list li {
+    padding-left: 0.7rem;
+    margin: 0.5rem 0;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.time-display {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    background: rgba(var(--text-color), 0.08);
+    margin-right: 2rem;
+}
+@media (prefers-color-scheme: dark) {
+    .time-display {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+</style>
+<script>
+    function getIPInfo() {
+        const ipInfoDiv = document.getElementById('user-info');
+        ipInfoDiv.innerHTML = '<div>IP地址加载中...</div>';
+        // 主接口换成更稳定的服务
+        // 使用搜狐IP接口获取IP和地理位置信息
+        const script = document.createElement('script');
+        script.src = 'http://pv.sohu.com/cityjson?ie=utf-8';
+        script.onload = function() {
+            const ipInfo = returnCitySN;
+            updateIPDisplay({
+                ip: ipInfo.cip,
+                country: ipInfo.cname,
+                region: ipInfo.province,
+                city: ipInfo.city,
+                isp: ipInfo.isp
+            });
+        };
+        script.onerror = function() {
+            console.log('主接口故障，尝试备用接口...');
+            // 备用接口：淘宝IP查询
+            fetch('http://ip.taobao.com/service/getIpInfo.php?ip=myip')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === 0) {
+                        const info = data.data;
+                        updateIPDisplay({
+                            ip: info.ip,
+                            country: info.country,
+                            region: info.region,
+                            city: info.city,
+                            isp: info.isp
+                        });
+                    } else {
+                        showError();
+                    }
+                })
+                .catch(() => {
+                    showError();
+                });
+        };
+        document.body.appendChild(script);
+    }
+    function updateIPDisplay(info) {
+        const infoDiv = document.getElementById('user-info');
+        infoDiv.innerHTML = `
+            <div>访问IP：${info.ip}</div>
+            ${info.country ? `<div>位置：${info.country} ${info.region} ${info.city}</div>` : ''}
+            ${info.isp ? `<div>运营商：${info.isp}</div>` : ''}
+        `;
+    }
+    function showError() {
+        const infoDiv = document.getElementById('user-info');
+        infoDiv.innerHTML = `
+            <div style="color: #ef4444;">
+                IP信息获取失败，请<a href="javascript:location.reload()">刷新重试</a>
+            </div>
+        `;
+    }
+    getIPInfo();
+    </script>
+<nav class="nav">
+    <!-- 原有导航项 -->
+    <a href="https://wuai233.fun" class="nav-link" target="_blank">
+        <button class="btn" style="background-color: var(--secondary-color); color: white;">
+            友情链接
+        </button>
+    </a>
+</nav>

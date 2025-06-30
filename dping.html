@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ 安全防护系统</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #00ff22;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .security-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .security-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .security-header i {
+            font-size: 3.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        .security-content {
+            font-size: 1.1rem;
+            color: #444;
+            text-align: justify;
+        }
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: var(--success-color);
+            color: white;
+            margin-top: 1.5rem;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .security-container {
+                margin: 1rem auto;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <script>
+        const SECURITY_CONFIG = {
+            maxRequests: 15,
+            timeWindow: 30000,
+            blockDuration: 600000
+        };
+        //初始化安全模块
+        (function initSecurity() {
+            const now = Date.now();
+            let reqData = JSON.parse(localStorage.getItem('reqTracker') || '{"count":0,"startTime":0}');
+            // 重置计数器
+            if (now - reqData.startTime > SECURITY_CONFIG.timeWindow) {
+                reqData = { count: 1, startTime: now };
+            } else {
+                reqData.count++;
+            }
+            // 异常请求检测
+            if (reqData.count > SECURITY_CONFIG.maxRequests) {
+                localStorage.setItem('blockUntil', now + SECURITY_CONFIG.blockDuration);
+                window.location.replace('paxn.dpdns.org');
+                return;
+            }
+            // 更新跟踪数据
+            localStorage.setItem('reqTracker', JSON.stringify(reqData));
+            // 阻断期检查
+            const blockUntil = parseInt(localStorage.getItem('blockUntil') || 0);
+            if (blockUntil > Date.now()) {
+                // 修改所有跳转地址
+                window.location.replace('https://paxn.dpdns.org');
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="security-container">
+        <div class="security-header">
+            <i class="fas fa-shield-alt"></i>
+            <h1>安全防护系统已启用 🔒</h1>
+        </div>
+        <div class="security-content">
+            <p>✅您正在访问的站点受到全方位安全保护：</p>
+            <ul>
+                <li>实时流量监控与分析</li>
+                <li>智能异常请求识别</li>
+                <li>分布式攻击防护</li>
+                <li>端到端数据加密</li>
+            </ul>
+            <p>🛡️ 我们的安全团队会持续监控系统状态，确保您的访问安全。</p>
+            <div class="status-indicator">
+                <i class="fas fa-check-circle"></i>
+                <span style="margin-left:8px">系统状态:正常</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
