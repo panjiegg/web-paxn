@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML基础结构教学</title>
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui;
+            margin: 0;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background-color: #f5f6fa;
+        }
+        .teaching-area {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        .practice-area {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas;
+            color: #e74c3c;
+        }
+        .code-example {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .editor-container {
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        #html-editor {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: none;
+            background: #f8f9fa;
+            font-family: Consolas;
+            resize: vertical;
+        }
+        #preview-frame {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ddd;
+            margin-top: 15px;
+            background: white;
+        }
+        .important-note {
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <article class="teaching-area">
+        <h1>HTML基础结构详解</h1>
+        <section>
+            <h2>1. 文档声明</h2>
+            <div class="code-example">
+                <code>&lt;!DOCTYPE html&gt;</code>
+            </div>
+            <p>这是HTML5的文档类型声明，必须位于文档第一行</p>
+        </section>
+        <section>
+            <h2>2. 根元素</h2>
+            <div class="code-example">
+                <code>&lt;html lang="zh-CN"&gt;&lt;/html&gt;</code>
+            </div>
+            <p>所有HTML内容的容器，lang属性指定文档语言</p>
+        </section>
+        <section>
+            <h2>3. 头部区域</h2>
+            <div class="code-example">
+                <pre><code>&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;页面标题&lt;/title&gt;
+&lt;/head&gt;</code></pre>
+            </div>
+            <div class="important-note">
+                <p>✅ 必须包含：字符集声明、视口设置、标题</p>
+                <p>❌ 不要放：可见内容</p>
+            </div>
+        </section>
+        <section>
+            <h2>4. 主体内容</h2>
+            <div class="code-example">
+                <code>&lt;body&gt;&lt;/body&gt;</code>
+            </div>
+            <p>所有可见内容都放在这个容器内</p>
+        </section>
+        <section>
+            <h2>5. 完整示例</h2>
+            <div class="code-example">
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;示例页面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;我的第一个标题&lt;/h1&gt;
+    &lt;p&gt;我的第一个段落。&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+            <div class="important-note">
+                <p>✅ 包含所有基础结构要素</p>
+                <p>✅ 符合HTML5标准规范</p>
+            </div>
+        </section>
+    </article>
+    <aside class="practice-area">
+        <h2>实践练习区</h2>
+        <div class="editor-container">
+            <textarea id="html-editor" placeholder="在此输入HTML代码...">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;我的网页&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+        </div>
+        <div class="code-hints">
+            <span>&lt;!DOCTYPE html&gt;</span>
+            <span>&lt;html&gt;</span>
+            <span>&lt;head&gt;</span>
+            <span>&lt;title&gt;</span>
+            <span>&lt;body&gt;</span>
+            <span>&lt;h1&gt;</span>
+        </div>
+        <button onclick="updatePreview()">▶ 运行代码</button>
+        <button onclick="showSourceCode()">🔍 查看源码</button>
+        <iframe id="preview-frame"></iframe>
+        <div class="important-note">
+            <p>💡 实践提示：</p>
+            <ol>
+                <li>从基础结构开始练习</li>
+                <li>逐步添加其他元素</li>
+                <li>观察不同标签的效果</li>
+            </ol>
+        </div>
+    </aside>
+    <script>
+        function updatePreview() {
+            const editor = document.getElementById('html-editor');
+            const preview = document.getElementById('preview-frame');
+            const doc = preview.contentWindow.document;
+            doc.open();
+            doc.write(editor.value);
+            doc.close();
+            doc.head.innerHTML += '<meta charset="UTF-8"><base href=".">';
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            updatePreview();
+        });
+        function showSourceCode() {
+            const editor = document.getElementById('html-editor');
+            const sourceContainer = document.createElement('pre');
+            sourceContainer.id = 'source-code';
+            sourceContainer.textContent = editor.value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+            const existingSource = document.getElementById('source-code');
+            if (existingSource) {
+                existingSource.remove();
+            }
+            editor.parentNode.insertBefore(sourceContainer, editor.nextSibling);
+            sourceContainer.style.display = 'block';
+        }
+            document.querySelectorAll('.code-hints span').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    const editor = document.getElementById('html-editor');
+                    const selectionStart = editor.selectionStart;
+                    const selectionEnd = editor.selectionEnd;
+                    const fullTag = tag.textContent;
+                    if (fullTag.startsWith('</')) return; 
+                    const tagName = fullTag.replace(/[<>]/g, '');
+                    let insertText = '';
+                    switch(tagName.toLowerCase()) {
+                        case '!doctype html':
+                            insertText = '<!DOCTYPE html>\n';
+                            break;
+                        case 'html':
+                            insertText = `<html lang="zh-CN">\n\n</html>`;
+                            break;
+                        default:
+                            insertText = `<${tagName}>\n\n</${tagName}>`;
+                    }
+                    editor.setRangeText(
+                        insertText,
+                        selectionStart,
+                        selectionEnd,
+                        'select'
+                    );
+                    const newPos = editor.value.indexOf('\n', editor.selectionStart) + 1;
+                    editor.setSelectionRange(newPos, newPos);
+                    editor.focus();
+                });
+            });
+        </script>
+    </script>
+    <style>
+        .code-hints {
+            margin: 10px 0;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .code-hints span {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: Consolas;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .code-hints span:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        #source-code {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: Consolas;
+        }
+    </style>
+</body>
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+    }
+    body {
+        opacity: 0;
+        animation: contentAppear 0.6s ease forwards;
+    }
+    
+    @keyframes contentAppear {
+        0% {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    .editor-container {
+        animation: editorSlide 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation-delay: 0.2s;
+    }
+    
+    @keyframes editorSlide {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .teaching-area {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+    .practice-area {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    }
+    code {
+        background-color: #f8f9fa;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-family: Consolas;
+        color: #e74c3c;
+    }
+    .code-example {
+        background: #2c3e50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 15px 0;
+        overflow-x: auto;
+    }
+    .editor-container {
+        border: 2px solid #bdc3c7;
+        border-radius: 5px;
+        margin: 15px 0;
+    }
+    #html-editor {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        border: none;
+        background: #f8f9fa;
+        font-family: Consolas;
+        resize: vertical;
+    }
+    #preview-frame {
+        width: 100%;
+        height: 300px;
+        border: 1px solid #ddd;
+        margin-top: 15px;
+        background: white;
+    }
+    .important-note {
+        border-left: 4px solid #3498db;
+        padding: 10px 15px;
+        background: #f8f9fa;
+        margin: 15px 0;
+    }
+    .fixed-button { 
+        position: fixed;
+        right: 20px;
+        bottom: 20px; 
+        background: var(--primary-color);
+        color: white; 
+        border: none; 
+        padding: 0.8rem 1.5rem; 
+        border-radius: 0.5rem; 
+        cursor: pointer; 
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+        transition: transform 0.2s ease; 
+    } 
+    .fixed-button:hover { 
+        background: var(--secondary-color); 
+        transform: translateY(-2px); 
+    }
+</style>
+<button class="fixed-button" onclick="window.location.href='html1.html'">上一页</button>
+</body>
+</html>

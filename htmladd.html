@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网页生成器</title>
+    <link rel="icon" href="/icon/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>网页内容生成器</h1>
+        
+        <div class="form-group">
+            <label>网页标题：</label>
+            <input type="text" id="pageTitle">
+        </div>
+
+        <div class="form-group">
+            <label>主要内容：</label>
+            <textarea id="content" rows="6"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>背景颜色：</label>
+            <input type="color" id="bgColor" value="#ffffff">
+        </div>
+
+        <div class="form-group">
+            <label>文字颜色：</label>
+            <input type="color" id="textColor" value="#000000">
+        </div>
+
+        <div class="form-group">
+            <label>作者：</label>
+            <input type="text" id="author">
+        </div>
+
+        <button onclick="generatePage()">生成网页</button>
+    </div>
+
+    <script>
+        function generatePage() {
+            // 获取表单数据
+            const title = document.getElementById('pageTitle').value || '默认标题';
+            const content = document.getElementById('content').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const textColor = document.getElementById('textColor').value;
+            const author = document.getElementById('author').value || '匿名作者';
+
+            // 生成完整HTML结构
+            const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+    <style>
+        body {
+            background-color: ${bgColor};
+            color: ${textColor};
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>${title}</h1>
+        <div>${content.replace(/\n/g, '<br>')}</div>
+        <hr>
+        <footer>Created by ${author}</footer>
+    </div>
+</body>
+</html>`;
+
+            // 创建下载链接
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            // 自动触发下载
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated_page.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HTML 教程</title>
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --secondary: #818CF8;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @keyframes titleSlide {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2.5rem;
+            animation: titleSlide 0.8s ease-out;
+            margin-bottom: 3rem;
+        }
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .code-sample {
+            background: #1E293B;
+            color: #F8FAFC;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: Consolas, monospace;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .code-comment {
+            color: #94A3B8;
+        }
+        .animate-button:hover {
+            background: var(--secondary);
+            transform: scale(1.05);
+        }
+        .fixed-button {
+            position: fixed; /* 固定定位 */
+            right: 20px; /* 右侧距离 */
+            bottom: 20px; /* 底部距离 */
+            background: var(--primary); /* 使用主题色 */
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+    
+        .fixed-button:hover {
+            background: var(--secondary); /* 悬停时颜色变浅 */
+            transform: translateY(-2px); /* 轻微上移 */
+        }
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+    
+        .card {
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+    
+        .code-sample {
+            padding: 1rem;
+            font-size: 0.9em;
+        }
+    
+        /* 移动端导航调整 */
+        .transition-link {
+            display: block;
+            padding: 12px;
+            font-size: 1.1em;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        body {
+            padding: 1rem;
+        }
+    
+        .spinner {
+            width: 30px;
+            height: 30px;
+        }
+    }
+    .card {
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: cardEnter 0.8s ease forwards;
+        animation-delay: 0.3s;
+    }
+    
+    @keyframes cardEnter {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    body.fade-out {
+        opacity: 0;
+    }
+
+    /* 加载动画 */
+    .page-transition {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        animation: rotate 1s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>HTML 教程</h1>
+        <div class="card">
+            <h2>HTML 教程</h2>
+            <div class="interactive-demo">
+                <p>
+                    超文本标记语言（英语：HyperText Markup Language，简称：HTML）是一种用于创建网页的标准标记语言。
+您可以使用 HTML 来建立自己的 Web 站点，HTML 运行在浏览器上，由浏览器来解析。
+在本教程中，您将学习如何使用 HTML 来创建站点。
+HTML 很容易学习！相信您能很快学会它！
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <h2>基础结构</h2>
+            <div class="code-sample">
+                <span class="code-comment">&lt;!-- HTML文档结构 --&gt;</span><br>
+                &lt;!DOCTYPE html&gt;<br>
+                &lt;html&gt;<br>
+                &nbsp;&nbsp;&lt;head&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;页面标题&lt;/title&gt;<br>
+                &nbsp;&nbsp;&lt;/head&gt;<br>
+                &nbsp;&nbsp;&lt;body&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- 页面内容 --&gt;<br>
+                &nbsp;&nbsp;&lt;/body&gt;<br>
+                &lt;/html&gt;
+            </div>
+        </div>
+        <div class="card">
+            <h2>标签</h2>
+            <p>
+                html的标签有非常的多下面展示几个常用的标签
+            </p>
+           <p> &lt;html&gt; | 元素以开始标签起始|&lt;/html&gt; | 元素以结束标签终止 | </p>
+           <p>&lt;!DOCTYPE html&gt; | 声明为 HTML5 文档 | </p>
+           <p>&lt;head&gt;&lt;/head&gt; | 这里声明了文档的编码格式 如utf-8 这个格式 | </p>
+           <p>&lt;title&gt;&lt;/title&gt; | 元素描述了文档的标题，它不会直接显示出来，会显示在网页上方的地方 | </p>
+           <p>&lt;body&gt;&lt;/body&gt; | 元素包含了可见的页面内容,比如里面包含h1 或者 p 标签 | </p>
+           <h2>!|  通过这里可以看到每一个标签开始和结束都有一个不一样的地方开始没有/结束有/  |!</h2>
+            <p>&lt;h1&gt; | 这里是标题符号 h1 - h6 6个格式 | &lt;/h1&gt;</p>
+            <p>&lt;p&gt;&lt;/p&gt; | 段落文本 | </p>
+        </div>
+    </div>
+
+</body>
+    <!-- 新增右下角按钮 -->
+    <button class="fixed-button" onclick="window.location.href='html2.html'">下一页</button>
+</body>
+</html>
+
+<style>
+    /* 添加页面切换动画 */
+    body {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: pageEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    @keyframes pageEnter {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .card {
+        opacity: 0;
+        transform: translateX(-30px);
+        animation: cardEnter 0.8s ease forwards;
+        animation-delay: 0.3s;
+    }
+    
+    @keyframes cardEnter {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    body.fade-out {
+        opacity: 0;
+    }
+
+    /* 加载动画 */
+    .page-transition {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        animation: rotate 1s linear infinite;
+    }
+
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<script>
+    // 添加页面切换逻辑
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.add('fade-out');
+            
+            // 显示加载动画
+            const transition = document.createElement('div');
+            transition.className = 'page-transition';
+            transition.innerHTML = '<svg class="spinner" viewBox="0 0 50 50">...</svg>';
+            document.body.appendChild(transition);
+            
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 500);
+        });
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.style.visibility = 'visible';
+        // 添加动画完成后的回调
+        document.body.addEventListener('animationend', () => {
+            document.querySelector('.spinner').style.display = 'none';
+        });
+    });
+</script>

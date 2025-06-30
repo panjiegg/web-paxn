@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网页生成器</title>
+    <link rel="icon" href="../icon/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --hover-color: #1d4ed8;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        body {
+            background-image: var(--bg-gradient);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin: 2rem auto;
+        }
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+        input, textarea, select {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        button:hover {
+            background: var(--hover-color);
+            transform: translateY(-1px);
+        }
+        .preview-box {
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #e2e8f0;
+            transition: border-color 0.3s ease;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <i class="fas fa-magic"></i>
+            网页内容生成器
+        </h1>
+        <div class="form-group">
+            <label><i class="fas fa-heading"></i> 网页标题：</label>
+            <input type="text" id="pageTitle" placeholder="输入您的网页标题...">
+        </div>
+        <div class="button-group">
+            <button onclick="generatePage()">
+                <i class="fas fa-download"></i>
+                生成网页
+            </button>
+            <button onclick="previewPage()" style="background: #22c55e;">
+                <i class="fas fa-eye"></i>
+                实时预览
+            </button>
+        </div>
+        <div class="preview-box" id="previewArea">
+            <div class="loading" style="display:none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                生成中...
+            </div>
+        </div>
+    </div>
+    <script>
+        function generatePage() {
+            document.querySelector('.loading').style.display = 'block';
+            setTimeout(() => {
+                document.querySelector('.loading').style.display = 'none';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .preview-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            min-height: 200px;
+        }
+        .advanced-options {
+            margin-top: 15px;
+            border-top: 1px dashed #ddd;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>网页内容生成器</h1>
+        <div class="form-group">
+            <label>网页标题：</label>
+            <input type="text" id="pageTitle">
+        </div>
+        <div class="form-group">
+            <label>主要内容：</label>
+            <textarea id="content" rows="6"></textarea>
+        </div>
+        <div class="form-group">
+            <label>背景颜色：</label>
+            <input type="color" id="bgColor" value="#ffffff">
+        </div>
+        <div class="form-group">
+            <label>文字颜色：</label>
+            <input type="color" id="textColor" value="#000000">
+        </div>
+        <div class="form-group">
+            <label>作者：</label>
+            <input type="text" id="author">
+        </div>
+        <button onclick="generatePage()">生成网页</button>
+        <button onclick="previewPage()">实时预览</button>
+        <div class="preview-box" id="previewArea"></div>
+    </div>
+    <script>
+        function previewPage() {
+            const previewContent = buildHTML();
+            document.getElementById('previewArea').innerHTML = previewContent;
+        }
+        function buildHTML() {
+            const params = {
+                title: document.getElementById('pageTitle').value || '默认标题',
+                content: document.getElementById('content').value,
+                bgColor: document.getElementById('bgColor').value,
+                textColor: document.getElementById('textColor').value,
+                author: document.getElementById('author').value || '匿名作者',
+                fontFamily: document.getElementById('fontFamily').value,
+                pageWidth: document.getElementById('pageWidth').value + 'px',
+                headerImage: document.getElementById('headerImage').files[0]
+            };
+
+            // 构建HTML内容
+            let html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${params.title}</title>
+    <style>
+        body {
+            background-color: ${params.bgColor};
+            color: ${params.textColor};
+            font-family: ${params.fontFamily};
+            padding: 20px;
+        }
+        .content {
+            max-width: ${params.pageWidth};
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">`;
+
+            // 添加页眉图片
+            if(params.headerImage) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    html += `<img src="${e.target.result}" style="width:100%;max-height:300px;object-fit:cover;">`;
+                };
+                reader.readAsDataURL(params.headerImage);
+            }
+
+            html += `
+                <h1>${params.title}</h1>
+                <div>${params.content.replace(/\n/g, '<br>')}</div>
+                <hr>
+                <footer>Created by ${params.author}</footer>
+            </div>
+</body>
+</html>`;
+
+            return html;
+        }
+
+        // 更新后的生成函数
+        function generatePage() {
+
+        const avoidRedeclareHtmlContent = buildHTML();
+            // 获取表单数据
+            const title = document.getElementById('pageTitle').value || '默认标题';
+            const content = document.getElementById('content').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const textColor = document.getElementById('textColor').value;
+            const author = document.getElementById('author').value || '匿名作者';
+
+            // 生成完整HTML结构
+            const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+    <style>
+        body {
+            background-color: ${bgColor};
+            color: ${textColor};
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>${title}</h1>
+        <div>${content.replace(/\n/g, '<br>')}</div>
+        <hr>
+        <footer>Created by ${author}</footer>
+    </div>
+</body>
+</html>`;
+
+            // 创建下载链接
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            // 自动触发下载
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated_page.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* 新增样式 */
+        .preview-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            min-height: 200px;
+        }
+        .advanced-options {
+            margin-top: 15px;
+            border-top: 1px dashed #ddd;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>网页内容生成器</h1>
+        
+        <div class="form-group">
+            <label>网页标题：</label>
+            <input type="text" id="pageTitle">
+        </div>
+
+        <div class="form-group">
+            <label>主要内容：</label>
+            <textarea id="content" rows="6"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>背景颜色：</label>
+            <input type="color" id="bgColor" value="#ffffff">
+        </div>
+
+        <div class="form-group">
+            <label>文字颜色：</label>
+            <input type="color" id="textColor" value="#000000">
+        </div>
+
+        <div class="form-group">
+            <label>作者：</label>
+            <input type="text" id="author">
+        </div>
+
+        <button onclick="generatePage()">生成网页</button>
+        <button onclick="previewPage()">实时预览</button>
+
+        <!-- 新增预览区域 -->
+        <div class="preview-box" id="previewArea"></div>
+    </div>
+
+    <script>
+        // 新增实时预览功能
+        function previewPage() {
+            const previewContent = buildHTML();
+            document.getElementById('previewArea').innerHTML = previewContent;
+        }
+
+        // 重构后的HTML构建函数
+        function buildHTML() {
+            // 收集所有参数
+            const params = {
+                title: document.getElementById('pageTitle').value || '默认标题',
+                content: document.getElementById('content').value,
+                bgColor: document.getElementById('bgColor').value,
+                textColor: document.getElementById('textColor').value,
+                author: document.getElementById('author').value || '匿名作者',
+                fontFamily: document.getElementById('fontFamily').value,
+                pageWidth: document.getElementById('pageWidth').value + 'px',
+                headerImage: document.getElementById('headerImage').files[0]
+            };
+
+            // 构建HTML内容
+            let html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${params.title}</title>
+    <style>
+        body {
+            background-color: ${params.bgColor};
+            color: ${params.textColor};
+            font-family: ${params.fontFamily};
+            padding: 20px;
+        }
+        .content {
+            max-width: ${params.pageWidth};
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">`;
+
+            // 添加页眉图片
+            if(params.headerImage) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    html += `<img src="${e.target.result}" style="width:100%;max-height:300px;object-fit:cover;">`;
+                };
+                reader.readAsDataURL(params.headerImage);
+            }
+
+            html += `
+                <h1>${params.title}</h1>
+                <div>${params.content.replace(/\n/g, '<br>')}</div>
+                <hr>
+                <footer>Created by ${params.author}</footer>
+            </div>
+</body>
+</html>`;
+
+            return html;
+        }
+
+        // 更新后的生成函数
+        function generatePage() {
+            const title = document.getElementById('pageTitle').value || '默认标题';
+            const content = document.getElementById('content').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const textColor = document.getElementById('textColor').value;
+            const author = document.getElementById('author').value || '匿名作者';
+
+            // 生成完整HTML结构
+            const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${title}</title>
+    <style>
+        body {
+            background-color: ${bgColor};
+            color: ${textColor};
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>${title}</h1>
+        <div>${content.replace(/\n/g, '<br>')}</div>
+        <hr>
+        <footer>Created by ${author}</footer>
+    </div>
+</body>
+</html>`;
+
+            // 创建下载链接
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            // 自动触发下载
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'generated_page.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 新增页面宽度实时显示
+        document.getElementById('pageWidth').addEventListener('input', function() {
+            document.getElementById('widthValue').textContent = this.value + 'px';
+        });
+    </script>
+</body>
+</html>
